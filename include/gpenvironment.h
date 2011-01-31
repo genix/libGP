@@ -154,7 +154,7 @@ void GPEnvironment::SetFitnessFunction( GPFitness(*fitnessFunc)( GPEnvironment&,
 	m_fitness_and_test_func = &GPEnvironment::EvaluateAndFitnessTest< R >;
 
 	// TODO: assert that the void* can take the size of this pointer
-	m_fitness_func = fitnessFunc;
+	m_fitness_func = reinterpret_cast<void*>(fitnessFunc);
 }
 
 // We need both a general version of EvaluateAndFitness test for the case when
@@ -164,7 +164,7 @@ template< class R >
 GPFitness GPEnvironment::EvaluateAndFitnessTest( int index )
 {
 	typedef GPFitness(*FitnessFunc)( GPEnvironment&, const int, const R& );
-	FitnessFunc custom_function = static_cast< FitnessFunc >( m_fitness_func );
+	FitnessFunc custom_function = reinterpret_cast< FitnessFunc >( m_fitness_func );
 	return custom_function( *this, index, ExecuteTree< R >( *this, m_population[ index ].m_tree->Root() ) );
 }
 

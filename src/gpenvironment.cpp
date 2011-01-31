@@ -385,7 +385,7 @@ template<>
 GPFitness GPEnvironment::EvaluateAndFitnessTest<void>( int index )
 {
 	typedef GPFitness(*FitnessFunc)( GPEnvironment&, const int );
-	FitnessFunc custom_function = static_cast< FitnessFunc >( m_fitness_func );
+	FitnessFunc custom_function = reinterpret_cast< FitnessFunc >( m_fitness_func );
 	ExecuteTree< void >( *this, m_population[ index ].m_tree->Root() );
 	return custom_function( *this, index );
 }
@@ -396,7 +396,7 @@ void GPEnvironment::SetFitnessFunction( GPFitness(*fitnessFunc)( GPEnvironment&,
 	m_fitness_and_test_func = &GPEnvironment::EvaluateAndFitnessTest< void >;
 
 	// TODO: assert that the void* can take the size of this pointer
-	m_fitness_func = fitnessFunc;
+	m_fitness_func = reinterpret_cast<void*>(fitnessFunc);
 }
 
 void GPEnvironment::OverrideIndividualFitness( int index, GPFitness fitness )
@@ -597,7 +597,7 @@ void GPEnvironment::MutateAndCrossover()
 		int						m_partner_index; 
 
 		ActionInfo( BREED_ACTION action, bool mutate, BREED_INDEX_RELATIVITY relativity, int partner_index )
-			: m_action( action ), m_mutate( mutate ), m_partner_index( partner_index ), m_partner_index_relativity( relativity )
+			: m_action( action ), m_mutate( mutate ), m_partner_index_relativity( relativity ), m_partner_index( partner_index )
 		{
 		}
 	};

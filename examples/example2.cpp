@@ -23,9 +23,9 @@
  */
 
 
-#include "..\include\gpdefines.h"
-#include "..\include\gpenvironment.h"
-#include "..\auxiliary\gpreporting.h"
+#include "gpdefines.h"
+#include "gpenvironment.h"
+#include "gpreporting.h"
 
 /*
  * This is a slightly more advanced example of using libGP.

@@ -116,6 +116,27 @@ void SerializeTree( const GPFunctionLookup& functions, const GPTree* tree, std::
 	}
 }
 
+namespace {
+struct IntermediateNode
+{
+	// filled in as we read the nodes from the serialized buffer
+	GPFuncID functionID;
+	GPFuncID delayedID;
+	
+	// return types (as an easy reference for later calculations)
+	GPTypeID originalReturnType;
+	GPTypeID delayedReturnType;
+	
+	int params[ GP_MAX_PARAMETERS ];
+	
+	// calculated later (this is essentially which node will be the parent)
+	int referencedByIndex;
+	
+	// set in the final phase when constructing the tree
+	GPTreeNode * finalNode;
+};	
+}
+
 // ---------------------------------------------------------------------------
 // DeserializeTree
 //		Given the functionset, and a stringstream to read from this will
@@ -126,25 +147,6 @@ void SerializeTree( const GPFunctionLookup& functions, const GPTree* tree, std::
 //
 bool DeserializeTree( const GPFunctionLookup& functions, GPTree*& tree, std::stringstream& in_serialized )
 {
-	struct IntermediateNode
-	{
-		// filled in as we read the nodes from the serialized buffer
-		GPFuncID functionID;
-		GPFuncID delayedID;
-
-		// return types (as an easy reference for later calculations)
-		GPTypeID originalReturnType;
-		GPTypeID delayedReturnType;
-
-		int params[ GP_MAX_PARAMETERS ];
-
-		// calculated later (this is essentially which node will be the parent)
-		int referencedByIndex;
-
-		// set in the final phase when constructing the tree
-		GPTreeNode * finalNode;
-	};
-
 	tree = NULL;
 	typedef std::map< int, IntermediateNode > IntermediateNodes;
 	IntermediateNodes nodes;

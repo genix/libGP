@@ -26,7 +26,7 @@
 #define GPREPORTING_H
 
 #include <sstream>
-#include "..\include\GPEnvironment.h"
+#include "gpenvironment.h"
 
 class GPStats;
 

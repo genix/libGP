@@ -90,7 +90,7 @@ public:
 	// TODO: gets are slow at the moment because they only work on name
 	//
 	template< class T >
-	bool GetListValues( const char* name, typename const GPStatsValueList< T >::ValueList*& outList ) const;
+	bool GetListValues( const char* name, const typename GPStatsValueList< T >::ValueList*& outList ) const;
 
 private:
 	GPStatsMap m_stats;
@@ -140,7 +140,7 @@ void GPStats::PushListValue( const char* name, const T& val )
 }
 
 template< class T >
-bool GPStats::GetListValues( const char* name, typename const GPStats::GPStatsValueList< T >::ValueList*& outList ) const
+bool GPStats::GetListValues( const char* name, const typename GPStats::GPStatsValueList< T >::ValueList*& outList ) const
 {
 	GPHash id = GPHashString( name, strlen( name ) );
 
